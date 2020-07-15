@@ -7,7 +7,7 @@ use Laminas\ServiceManager\Factory\InvokableFactory;
 
 return [
 	// This lines opens the configuration for the RouteManager
-	'router'       => [
+	'router'          => [
 		// Open configuration for all possible routes
 		'routes' => [
 			// Define a new route called "blog"
@@ -28,22 +28,22 @@ return [
 			],
 		],
 	],
-	'controllers'  => [
+	'controllers'     => [
 		'factories' => [
 			Controller\ListController::class => Factory\ListControllerFactory::class,
 		],
 	],
-	'view_manager' => [
+	'view_manager'    => [
 		'template_path_stack' => [
 			__DIR__.'/../view',
 		],
 	],
 	'service_manager' => [
-		'aliases' => [
+		'aliases'   => [
 			Model\PostRepositoryInterface::class => Model\PostRepository::class,
 		],
 		'factories' => [
-			Model\PostRepository::class => InvokableFactory::class,
+			Model\PostRepository::class => Factory\PostRepositoryFactory::class,
 		],
 	],
 ];
