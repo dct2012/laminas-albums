@@ -1,0 +1,34 @@
+version: "3.7"
+
+services:
+  albums-app:
+    build:
+      context: "_php"
+    container_name: albums-app
+    restart: always
+    volumes:
+      - ./html:/var/www
+      - ./_apache:/etc/apache2/sites-available
+    links:
+      - mariadb
+    ports:
+      - "127.0.0.1:80:80"
+      - "127.0.0.1:443:443"
+
+  mariadb:
+    image: mariadb:latest
+    container_name: db
+    restart: always
+    ports:
+      - "127.0.0.1:3306:3306"
+    volumes:
+      - ./_db:/docker-entrypoint-initdb.d
+      - albums-db:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: docker
+      MYSQL_DATABASE: docker
+      MYSQL_USER: docker
+      MYSQL_PASSWORD: docker
+
+volumes:
+  albums-db:
