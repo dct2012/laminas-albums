@@ -6,14 +6,12 @@
  * @license   https://github.com/laminas/laminas-mvc-skeleton/blob/master/LICENSE.md New BSD License
  */
 
-declare(strict_types=1);
+declare( strict_types = 1 );
 
 namespace Application;
 
-class Module
-{
-    public function getConfig() : array
-    {
-        return include __DIR__ . '/../config/module.config.php';
-    }
+class Module {
+	public function getConfig(): array {
+		return include __DIR__.'/../config/module.config.php';
+	}
 }

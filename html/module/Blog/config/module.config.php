@@ -2,8 +2,9 @@
 
 namespace Blog;
 
-use Laminas\Router\Http\Literal;
 use Laminas\ServiceManager\Factory\InvokableFactory;
+use Laminas\Router\Http\Literal;
+use Laminas\Router\Http\Segment;
 
 return [
 	// This lines opens the configuration for the RouteManager
@@ -13,9 +14,9 @@ return [
 			// Define a new route called "blog"
 			'blog' => [
 				// Define a "literal" route type:
-				'type'    => Literal::class,
+				'type'          => Literal::class,
 				// Configure the route itself
-				'options' => [
+				'options'       => [
 					// Listen to "/blog" as uri:
 					'route'    => '/blog',
 					// Define default controller and action to be called when
@@ -25,12 +26,65 @@ return [
 						'action'     => 'index',
 					],
 				],
+				'may_terminate' => true,
+				'child_routes'  => [
+					'detail' => [
+						'type'    => Segment::class,
+						'options' => [
+							'route'       => '/:id',
+							'defaults'    => [
+								'action' => 'detail',
+							],
+							'constraints' => [
+								'id' => '[1-9]\d*',
+							],
+						],
+					],
+					'add'    => [
+						'type'    => Literal::class,
+						'options' => [
+							'route'    => '/add',
+							'defaults' => [
+								'controller' => Controller\WriteController::class,
+								'action'     => 'add',
+							],
+						],
+					],
+					'edit'   => [
+						'type'    => Segment::class,
+						'options' => [
+							'route'       => '/edit/:id',
+							'defaults'    => [
+								'controller' => Controller\WriteController::class,
+								'action'     => 'edit',
+							],
+							'constraints' => [
+								'id' => '[1-9]\d*',
+							],
+						],
+					],
+					'delete' => [
+						'type'    => Segment::class,
+						'options' => [
+							'route'       => '/delete/:id',
+							'defaults'    => [
+								'controller' => Controller\DeleteController::class,
+								'action'     => 'delete',
+							],
+							'constraints' => [
+								'id' => '[1-9]\d*',
+							],
+						],
+					],
+				],
 			],
 		],
 	],
 	'controllers'     => [
 		'factories' => [
-			Controller\ListController::class => Factory\ListControllerFactory::class,
+			Controller\ListController::class   => Factory\ListControllerFactory::class,
+			Controller\WriteController::class  => Factory\WriteControllerFactory::class,
+			Controller\DeleteController::class => Factory\DeleteControllerFactory::class,
 		],
 	],
 	'view_manager'    => [
@@ -41,9 +95,11 @@ return [
 	'service_manager' => [
 		'aliases'   => [
 			Model\PostRepositoryInterface::class => Model\PostRepository::class,
+			Model\PostCommandInterface::class    => Model\PostCommand::class,
 		],
 		'factories' => [
 			Model\PostRepository::class => Factory\PostRepositoryFactory::class,
+			Model\PostCommand::class    => Factory\PostCommandFactory::class,
 		],
 	],
 ];

@@ -90,6 +90,23 @@ return [
 			[
 				'label' => 'Blog',
 				'route' => 'blog',
+				'pages' => [
+					[
+						'label'  => 'Add',
+						'route'  => 'blog/add',
+						'action' => 'add',
+					],
+					[
+						'label'  => 'Edit',
+						'route'  => 'blog/edit',
+						'action' => 'edit',
+					],
+					[
+						'label'  => 'Delete',
+						'route'  => 'blog/delete',
+						'action' => 'delete',
+					],
+				],
 			],
 		],
 	],
