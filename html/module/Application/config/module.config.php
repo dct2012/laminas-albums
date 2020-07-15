@@ -87,6 +87,10 @@ return [
 					],
 				],
 			],
+			[
+				'label' => 'Blog',
+				'route' => 'blog',
+			],
 		],
 	],
 ];

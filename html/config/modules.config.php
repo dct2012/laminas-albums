@@ -12,8 +12,8 @@
  * This should be an array of module namespaces used in the application.
  */
 return [
-    'Laminas\Paginator',
-    'Laminas\Navigation',
+	'Laminas\Paginator',
+	'Laminas\Navigation',
 	'Laminas\Db',
 	'Laminas\Form',
 	'Laminas\Hydrator',
@@ -23,5 +23,6 @@ return [
 	'Laminas\Router',
 	'Laminas\Validator',
 	'Application',
-	'Album'
+	'Album',
+	'Blog'
 ];

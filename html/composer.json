@@ -23,12 +23,13 @@
     "psr-4": {
       "Application\\": "module/Application/src/",
       "Album\\": "module/Album/src/",
-      "AlbumTest\\": "module/Album/test/"
+      "Blog\\": "module/Blog/src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "ApplicationTest\\": "module/Application/test/"
+      "ApplicationTest\\": "module/Application/test/",
+      "AlbumTest\\": "module/Album/test/"
     }
   },
   "scripts": {
