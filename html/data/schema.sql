@@ -1,5 +1,3 @@
-# sql dump goes here
-
 CREATE TABLE album
 (
     id     INTEGER PRIMARY KEY AUTO_INCREMENT,

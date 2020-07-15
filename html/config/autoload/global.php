@@ -13,5 +13,10 @@
  */
 
 return [
-    // ...
+	'db' => [
+		'driver'   => 'Pdo',
+		'dsn'      => 'mysql:dbname=docker;host=db;charset=utf8',
+		'username' => 'docker',
+		'password' => 'docker',
+	],
 ];
