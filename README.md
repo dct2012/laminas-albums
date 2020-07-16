@@ -1,7 +1,8 @@
 Laminas Albums
 ====
 Result from following a tutorial on laminas
-found here: https://docs.laminas.dev/tutorials/getting-started
+found here: https://docs.laminas.dev/tutorials/getting-started.
+With the addition of a user login/out/up functionality.
 
 Usage
 -----

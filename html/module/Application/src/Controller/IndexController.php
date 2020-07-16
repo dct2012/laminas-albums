@@ -10,11 +10,19 @@ declare( strict_types = 1 );
 
 namespace Application\Controller;
 
+use Laminas\Authentication\AuthenticationService;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 
 class IndexController extends AbstractActionController {
 	public function indexAction() {
+		/* @var AuthenticationService */
+		$authenticationService = $authenticationService = $this->plugin( 'identity' )->getAuthenticationService();
+
+		if( !$authenticationService->hasIdentity() ) {
+			return $this->redirect()->toRoute( 'login' );
+		}
+
 		return new ViewModel();
 	}
 }

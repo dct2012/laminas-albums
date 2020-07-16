@@ -6,6 +6,7 @@ use Blog\Form\PostForm;
 use Blog\Model\PostCommandInterface;
 use Blog\Model\PostRepositoryInterface;
 use InvalidArgumentException;
+use Laminas\Authentication\AuthenticationService;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 
@@ -14,13 +15,10 @@ class WriteController extends AbstractActionController {
 	private $command;
 	/* @var PostForm */
 	private $form;
-	/**
-	 * @var PostRepositoryInterface
-	 */
+	/** @var PostRepositoryInterface */
 	private $repository;
 
 	/**
-	 * WriteController constructor.
 	 * @param PostCommandInterface $command
 	 * @param PostForm $form
 	 * @param PostRepositoryInterface $repository
@@ -32,6 +30,13 @@ class WriteController extends AbstractActionController {
 	}
 
 	public function addAction() {
+		/* @var AuthenticationService */
+		$authenticationService = $authenticationService = $this->plugin( 'identity' )->getAuthenticationService();
+
+		if( !$authenticationService->hasIdentity() ) {
+			return $this->redirect()->toRoute( 'login' );
+		}
+
 		$request   = $this->getRequest();
 		$viewModel = new ViewModel( [ 'form' => $this->form ] );
 
@@ -62,6 +67,13 @@ class WriteController extends AbstractActionController {
 	}
 
 	public function editAction() {
+		/* @var AuthenticationService */
+		$authenticationService = $authenticationService = $this->plugin( 'identity' )->getAuthenticationService();
+
+		if( !$authenticationService->hasIdentity() ) {
+			return $this->redirect()->toRoute( 'login' );
+		}
+
 		$id = $this->params()->fromRoute( 'id' );
 		if( !$id ) {
 			return $this->redirect()->toRoute( 'blog' );

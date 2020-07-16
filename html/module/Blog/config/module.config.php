@@ -2,7 +2,6 @@
 
 namespace Blog;
 
-use Laminas\ServiceManager\Factory\InvokableFactory;
 use Laminas\Router\Http\Literal;
 use Laminas\Router\Http\Segment;
 

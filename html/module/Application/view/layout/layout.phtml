@@ -47,6 +47,7 @@
 			         ->setMaxDepth( 0 )
 			         ->setUlClass( 'nav navbar-nav' ) ?>
         </div>
+        <button type="button" class="btn btn-danger">Logout</button>
     </div>
 </nav>
 <div class="container">
@@ -56,10 +57,6 @@
 	         ->setPartial( 'partial/breadcrumb' ) ?>
 	<?= $this->content ?>
     <hr>
-    <footer>
-        <p>&copy; <?= date( 'Y' ) ?> <a href="https://getlaminas.org/">Laminas Project</a> a Series of LF Projects, LLC.
-        </p>
-    </footer>
 </div>
 <?= $this->inlineScript()
          ->prependFile( $this->basePath( 'js/bootstrap.min.js' ) )

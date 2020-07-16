@@ -1,13 +1,13 @@
 <?php
 
-namespace Album\Form;
+namespace User\Form;
 
 use Laminas\Form\Form;
 
-class AlbumForm extends Form {
+class UserForm extends Form {
 	public function __construct( $name = null ) {
 		// We will ignore the name provided to the constructor
-		parent::__construct( 'album' );
+		parent::__construct( 'user' );
 
 		$this->add(
 			[
@@ -17,29 +17,29 @@ class AlbumForm extends Form {
 		);
 		$this->add(
 			[
-				'name'    => 'title',
+				'name'    => 'username',
 				'type'    => 'text',
 				'options' => [
-					'label' => 'Title',
+					'label' => 'Username',
 				],
 			]
 		);
 		$this->add(
 			[
-				'name'    => 'artist',
+				'name'    => 'password',
 				'type'    => 'text',
 				'options' => [
-					'label' => 'Artist',
+					'label' => 'Password',
 				],
 			]
 		);
 		$this->add(
 			[
-				'name'       => 'submit',
+				'name'       => 'login',
 				'type'       => 'submit',
 				'attributes' => [
-					'value' => 'Go',
-					'id'    => 'submitbutton',
+					'value' => 'Login',
+					'id'    => 'loginButton',
 				],
 			]
 		);

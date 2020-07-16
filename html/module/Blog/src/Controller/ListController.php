@@ -4,14 +4,12 @@ namespace Blog\Controller;
 
 use Blog\Model\PostRepositoryInterface;
 
+use Laminas\Authentication\AuthenticationService;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 
-
 class ListController extends AbstractActionController {
-	/**
-	 * @var PostRepositoryInterface
-	 */
+	/* @var PostRepositoryInterface */
 	private $postRepository;
 
 	public function __construct( PostRepositoryInterface $postRepository ) {
@@ -19,6 +17,13 @@ class ListController extends AbstractActionController {
 	}
 
 	public function indexAction() {
+		/* @var AuthenticationService */
+		$authenticationService = $authenticationService = $this->plugin( 'identity' )->getAuthenticationService();
+
+		if( !$authenticationService->hasIdentity() ) {
+			return $this->redirect()->toRoute( 'login' );
+		}
+
 		return new ViewModel(
 			[
 				'posts' => $this->postRepository->findAllPosts(),
@@ -27,6 +32,13 @@ class ListController extends AbstractActionController {
 	}
 
 	public function detailAction() {
+		/* @var AuthenticationService */
+		$authenticationService = $authenticationService = $this->plugin( 'identity' )->getAuthenticationService();
+
+		if( !$authenticationService->hasIdentity() ) {
+			return $this->redirect()->toRoute( 'login' );
+		}
+
 		$id = $this->params()->fromRoute( 'id' );
 
 		try {

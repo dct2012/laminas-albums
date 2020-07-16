@@ -17,20 +17,10 @@ use Laminas\ServiceManager\Factory\InvokableFactory;
 return [
 	'router'       => [
 		'routes' => [
-			'home'        => [
+			'home' => [
 				'type'    => Literal::class,
 				'options' => [
 					'route'    => '/',
-					'defaults' => [
-						'controller' => Controller\IndexController::class,
-						'action'     => 'index',
-					],
-				],
-			],
-			'application' => [
-				'type'    => Segment::class,
-				'options' => [
-					'route'    => '/application[/:action]',
 					'defaults' => [
 						'controller' => Controller\IndexController::class,
 						'action'     => 'index',
@@ -66,6 +56,7 @@ return [
 				'label' => 'Home',
 				'route' => 'home',
 			],
+
 			[
 				'label' => 'Album',
 				'route' => 'album',
@@ -107,6 +98,18 @@ return [
 						'action' => 'delete',
 					],
 				],
+			],
+			[
+				'label' => 'User',
+				'route' => 'user',
+			],
+			[
+				'label' => 'Login',
+				'route' => 'login',
+			],
+			[
+				'label' => 'Signup',
+				'route' => 'signup',
 			],
 		],
 	],

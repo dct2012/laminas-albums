@@ -5,6 +5,7 @@ namespace Blog\Controller;
 use Blog\Model\PostCommandInterface;
 use Blog\Model\PostRepositoryInterface;
 use InvalidArgumentException;
+use Laminas\Authentication\AuthenticationService;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 
@@ -24,6 +25,13 @@ class DeleteController extends AbstractActionController {
 	}
 
 	public function deleteAction() {
+		/* @var AuthenticationService */
+		$authenticationService = $authenticationService = $this->plugin( 'identity' )->getAuthenticationService();
+
+		if( !$authenticationService->hasIdentity() ) {
+			return $this->redirect()->toRoute( 'login' );
+		}
+
 		$id = $this->params()->fromRoute( 'id' );
 		if( !$id ) {
 			return $this->redirect()->toRoute( 'blog' );

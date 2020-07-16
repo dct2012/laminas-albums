@@ -8,6 +8,7 @@ use Album\Model\AlbumTable;
 use Album\Form\AlbumForm;
 use Album\Model\Album;
 
+use Laminas\Authentication\AuthenticationService;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 
@@ -21,22 +22,36 @@ class AlbumController extends AbstractActionController {
 	}
 
 	public function indexAction() {
+		/* @var AuthenticationService */
+		$authenticationService = $authenticationService = $this->plugin( 'identity' )->getAuthenticationService();
+
+		if( !$authenticationService->hasIdentity() ) {
+			return $this->redirect()->toRoute( 'login' );
+		}
+
 		// Grab the paginator from the AlbumTable:
-		$paginator = $this->table->fetchAll(true);
+		$paginator = $this->table->fetchAll( true );
 
 		// Set the current page to what has been passed in query string,
 		// or to 1 if none is set, or the page is invalid:
-		$page = (int) $this->params()->fromQuery('page', 1);
-		$page = ($page < 1) ? 1 : $page;
-		$paginator->setCurrentPageNumber($page);
+		$page = (int)$this->params()->fromQuery( 'page', 1 );
+		$page = ( $page < 1 ) ? 1 : $page;
+		$paginator->setCurrentPageNumber( $page );
 
 		// Set the number of items per page to 10:
-		$paginator->setItemCountPerPage(10);
+		$paginator->setItemCountPerPage( 10 );
 
-		return new ViewModel(['paginator' => $paginator]);
+		return new ViewModel( [ 'paginator' => $paginator ] );
 	}
 
 	public function addAction() {
+		/* @var AuthenticationService */
+		$authenticationService = $authenticationService = $this->plugin( 'identity' )->getAuthenticationService();
+
+		if( !$authenticationService->hasIdentity() ) {
+			return $this->redirect()->toRoute( 'login' );
+		}
+
 		$form = new AlbumForm();
 		$form->get( 'submit' )->setValue( 'Add' );
 
@@ -60,6 +75,13 @@ class AlbumController extends AbstractActionController {
 	}
 
 	public function editAction() {
+		/* @var AuthenticationService */
+		$authenticationService = $authenticationService = $this->plugin( 'identity' )->getAuthenticationService();
+
+		if( !$authenticationService->hasIdentity() ) {
+			return $this->redirect()->toRoute( 'login' );
+		}
+
 		$id = (int)$this->params()->fromRoute( 'id', 0 );
 
 		if( 0 === $id ) {
@@ -100,6 +122,13 @@ class AlbumController extends AbstractActionController {
 	}
 
 	public function deleteAction() {
+		/* @var AuthenticationService */
+		$authenticationService = $authenticationService = $this->plugin( 'identity' )->getAuthenticationService();
+
+		if( !$authenticationService->hasIdentity() ) {
+			return $this->redirect()->toRoute( 'login' );
+		}
+
 		$id = (int)$this->params()->fromRoute( 'id', 0 );
 		if( !$id ) {
 			return $this->redirect()->toRoute( 'album' );
