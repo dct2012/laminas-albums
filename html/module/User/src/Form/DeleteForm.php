@@ -1,16 +1,15 @@
 <?php
 
-namespace Login\Form;
+namespace User\Form;
 
 use User\Model\User;
 use Laminas\Form\Form;
 use Laminas\Form\Element\Csrf;
 use Laminas\Hydrator\ReflectionHydrator;
 
-class LoginForm extends Form {
-	/** @param null $name */
-	public function __construct( $name = null ) {
-		parent::__construct( 'login' );
+class DeleteForm extends Form {
+	public function __construct() {
+		parent::__construct( 'delete' );
 
 		$this->setHydrator( new ReflectionHydrator() );
 		$this->setObject( new User( '', '' ) );
@@ -23,11 +22,8 @@ class LoginForm extends Form {
 		);
 		$this->add(
 			[
-				'name'    => 'username',
-				'type'    => 'text',
-				'options' => [
-					'label' => 'Username:',
-				],
+				'name' => 'username',
+				'type' => 'hidden',
 			]
 		);
 		$this->add(
@@ -35,18 +31,18 @@ class LoginForm extends Form {
 				'name'    => 'password',
 				'type'    => 'password',
 				'options' => [
-					'label' => 'Password:',
+					'label' => 'Current Password:',
 				],
 			]
 		);
 		$this->add( new Csrf( 'security' ) );
 		$this->add(
 			[
-				'name'       => 'login',
+				'name'       => 'delete',
 				'type'       => 'submit',
 				'attributes' => [
-					'value' => 'Login',
-					'id'    => 'loginButton',
+					'value' => 'Delete',
+					'id'    => 'deleteButton',
 				],
 			]
 		);

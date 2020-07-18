@@ -1,15 +1,15 @@
 <?php
 
-namespace Signup\Form;
+namespace User\Form;
 
 use Laminas\Form\Element\Csrf;
-use User\Model\User;
 use Laminas\Form\Form;
 use Laminas\Hydrator\ReflectionHydrator;
+use User\Model\User;
 
-class SignupForm extends Form {
+class UpdatePasswordForm extends Form {
 	public function __construct() {
-		parent::__construct( 'signup' );
+		parent::__construct( 'update_password' );
 
 		$this->setHydrator( new ReflectionHydrator() );
 		$this->setObject( new User( '', '' ) );
@@ -22,10 +22,16 @@ class SignupForm extends Form {
 		);
 		$this->add(
 			[
-				'name'    => 'username',
-				'type'    => 'text',
+				'name' => 'username',
+				'type' => 'hidden',
+			]
+		);
+		$this->add(
+			[
+				'name'    => 'current_password',
+				'type'    => 'password',
 				'options' => [
-					'label' => 'Username:',
+					'label' => 'Current Password:',
 				],
 			]
 		);
@@ -34,27 +40,27 @@ class SignupForm extends Form {
 				'name'    => 'password',
 				'type'    => 'password',
 				'options' => [
-					'label' => 'Password:',
+					'label' => 'New Password:',
 				],
 			]
 		);
 		$this->add(
 			[
-				'name'    => 'verify-password',
+				'name'    => 'verify_new_password',
 				'type'    => 'password',
 				'options' => [
-					'label' => 'Verify Password:',
+					'label' => 'Verify New Password:',
 				],
 			]
 		);
 		$this->add( new Csrf( 'security' ) );
 		$this->add(
 			[
-				'name'       => 'signup',
+				'name'       => 'update',
 				'type'       => 'submit',
 				'attributes' => [
-					'value' => 'Sign Up',
-					'id'    => 'signupButton',
+					'value' => 'Update',
+					'id'    => 'updateButton',
 				],
 			]
 		);

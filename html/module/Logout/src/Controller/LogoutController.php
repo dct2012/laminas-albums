@@ -20,32 +20,31 @@ class LogoutController extends AbstractActionController {
 
 	/** @return Response|ViewModel */
 	public function indexAction() {
-		$Request   = $this->getRequest();
-		$ViewModel = new ViewModel( [ 'Form' => $this->Form ] );
-		/** @var AuthenticationService $AuthService */
-		$AuthService = $this->plugin( 'identity' )->getAuthenticationService();
+		/* @var FlashMessenger $FM */
+		/** @var AuthenticationService $AS */
+		$Request = $this->getRequest();
+		$AS      = $this->plugin( 'identity' )->getAuthenticationService();
+		$FM      = $this->plugin( 'flashMessenger' );
 
-		if( !$AuthService->hasIdentity() ) {
+		if( !$AS->hasIdentity() ) {
+			$FM->addErrorMessage( 'You have to login before you can logout!' );
 			return $this->redirect()->toRoute( 'login' );
 		}
 
 		if( !$Request->isPost() ) {
-			return $this->redirect()->toRoute( 'home' );
+			return $this->redirect()->refresh();
 		}
 
 		$this->Form->setData( $Request->getPost() );
-
 		if( !$this->Form->isValid() ) {
-			return $ViewModel;
+			foreach( $this->Form->getMessages() as $error ) {
+				$FM->addErrorMessage( $error );
+			}
+			return $this->redirect()->refresh();
 		}
 
-		// Clear identity
-		$AuthService->clearIdentity();
-
-		// Set success message
-		/* @var FlashMessenger $FlashMessenger */
-		$FlashMessenger = $this->plugin( 'flashMessenger' );
-		$FlashMessenger->addSuccessMessage( 'Successfully Logged Out.' );
+		$AS->clearIdentity();
+		$FM->addSuccessMessage( 'Successfully Logged Out.' );
 
 		return $this->redirect()->toRoute( 'login' );
 	}

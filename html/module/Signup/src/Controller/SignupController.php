@@ -2,18 +2,17 @@
 
 namespace Signup\Controller;
 
-use Laminas\Authentication\AuthenticationService;
-use Laminas\Http\Response;
-use Laminas\Mvc\Plugin\FlashMessenger\FlashMessenger;
-use Laminas\Mvc\Plugin\Identity\Identity;
-use Laminas\Validator\Identical;
-use Laminas\Validator\StringLength;
-use User\Command\UserCommand;
-use Signup\Form\SignupForm;
-use Laminas\Mvc\Controller\AbstractActionController;
-use Laminas\View\Model\ViewModel;
 use Exception;
 use User\Model\User;
+use User\Command\UserCommand;
+use Signup\Form\SignupForm;
+use Laminas\Http\Response;
+use Laminas\View\Model\ViewModel;
+use Laminas\Validator\{Identical, StringLength};
+use Laminas\Authentication\AuthenticationService;
+use Laminas\Mvc\Plugin\Identity\Identity;
+use Laminas\Mvc\Controller\AbstractActionController;
+use Laminas\Mvc\Plugin\FlashMessenger\FlashMessenger;
 
 class SignupController extends AbstractActionController {
 	/** @var UserCommand */
@@ -40,10 +39,9 @@ class SignupController extends AbstractActionController {
 		$AS       = $Identity->getAuthenticationService();
 		$FM       = $this->plugin( 'flashMessenger' );
 
-		// if logged in go to home
 		if( $AS->hasIdentity() ) {
 			$FM->addInfoMessage( 'You are already logged in.' );
-			return $this->redirect()->toRoute( 'home' );
+			return $this->redirect()->toRoute( 'user' );
 		}
 
 		if( !$Request->isPost() ) {
@@ -52,14 +50,13 @@ class SignupController extends AbstractActionController {
 
 		$data = $Request->getPost();
 
-
 		$Identical = new Identical( $data[ 'password' ] );
 		$Identical->setMessage( 'Passwords are not identical!' );
 		if( !$Identical->isValid( $data[ 'verify-password' ] ) ) {
 			foreach( $Identical->getMessages() as $error ) {
 				$FM->addErrorMessage( $error );
 			}
-			return new ViewModel( [ 'Form' => $this->Form ] );
+			return $this->redirect()->refresh();
 		}
 
 		$StringLength = new StringLength( [ 'min' => 8, 'max' => 100 ] );
@@ -69,16 +66,15 @@ class SignupController extends AbstractActionController {
 			foreach( $StringLength->getMessages() as $error ) {
 				$FM->addErrorMessage( $error );
 			}
-			return new ViewModel( [ 'Form' => $this->Form ] );
+			return $this->redirect()->refresh();
 		}
 
 		$this->Form->setData( $data );
-
 		if( !$this->Form->isValid() ) {
 			foreach( $this->Form->getMessages() as $error ) {
 				$FM->addErrorMessage( $error );
 			}
-			return new ViewModel( [ 'Form' => $this->Form ] );
+			return $this->redirect()->refresh();
 		}
 
 		/* @var User $User */
@@ -88,8 +84,7 @@ class SignupController extends AbstractActionController {
 			$User = $this->Command->create( $User );
 		} catch( Exception $e ) {
 			$FM->addErrorMessage( $e->getMessage() );
-
-			return new ViewModel( [ 'Form' => $this->Form ] );
+			return $this->redirect()->refresh();
 		}
 
 		$FM->addSuccessMessage( "Successfully signed up user: {$User->getUserName()}." );

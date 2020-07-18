@@ -1,28 +1,27 @@
 <?php
 
-use User\Form\UserForm;
+use User\Form\DeleteForm;
+use User\Model\User;
 
-$title = 'Login';
+$title = 'Delete Account';
 $this->headTitle( $title );
 
-/* @var UserForm $Form */
-$userName = $Form->get( 'username' )
-                 ->setAttribute( 'class', 'form-control' )
-                 ->setAttribute( 'required', true )
-                 ->setAttribute( 'placeholder', 'Username' );
+/* @var DeleteForm $Form */
+/* @var User $User */
 
 $password = $Form->get( 'password' )
                  ->setAttribute( 'class', 'form-control' )
                  ->setAttribute( 'required', true )
-                 ->setAttribute( 'placeholder', 'Password' );
+                 ->setAttribute( 'placeholder', 'Current Password' );
 
-$submit = $Form->get( 'login' )
-               ->setAttribute( 'class', 'btn btn-primary' );
+$submit = $Form->get( 'delete' )
+               ->setAttribute( 'class', 'btn btn-danger' );
 
-$Form->setAttribute( 'action', $this->url( 'login', [ 'action' => 'index' ] ) )
+$Form->setAttribute( 'action', $this->url( 'user/delete', [ 'action' => 'index' ] ) )
      ->setAttribute( 'method', 'post' )
      ->setAttribute( 'autocomplete', 'off' )
      ->prepare();
+
 ?>
 <div class="card">
     <div class="card-header">
@@ -30,17 +29,10 @@ $Form->setAttribute( 'action', $this->url( 'login', [ 'action' => 'index' ] ) )
     </div>
     <div class="card-body">
 		<?= $this->form()->openTag( $Form ) ?>
-        <div class="form-group">
-            <div class="row">
-                <div class="col-2">
-					<?= $this->formLabel( $userName ) ?>
-                </div>
-                <div class="col-10">
-					<?= $this->formElement( $userName ) ?>
-					<?= $this->formElementErrors()->render( $userName, [ 'class' => 'help-block' ] ) ?>
-                </div>
-            </div>
+        <div class="alert alert-danger">
+            If you are sure you want to delete your account, enter your password and click Delete.
         </div>
+        <hr>
 
         <div class="form-group">
             <div class="row">
@@ -59,12 +51,10 @@ $Form->setAttribute( 'action', $this->url( 'login', [ 'action' => 'index' ] ) )
         <div class="text-right">
 			<?php
 			echo $this->formSubmit( $submit );
-			echo $this->formHidden( $Form->get( 'id' ) );
+			echo $this->formHidden( $Form->get( 'id' )->setValue( $User->getId() ) );
+			echo $this->formHidden( $Form->get( 'username' )->setValue( $User->getUserName() ) );
 			?>
         </div>
 		<?= $this->form()->closeTag() ?>
-    </div>
-    <div class="card-footer text-muted">
-        Don't have an account? <a href="/signup">Sign up</a>.
     </div>
 </div>

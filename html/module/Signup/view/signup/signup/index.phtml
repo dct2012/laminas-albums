@@ -79,9 +79,9 @@ $Form->setAttribute( 'action', $this->url( 'signup', [ 'action' => 'index' ] ) )
 			<?php
 			echo $this->formSubmit( $submit );
 			echo $this->formHidden( $Form->get( 'id' ) );
-			echo $this->form()->closeTag();
 			?>
         </div>
+		<?= $this->form()->closeTag() ?>
     </div>
     <div class="card-footer text-muted">
         Already have a account? <a href="/login">Login</a>.

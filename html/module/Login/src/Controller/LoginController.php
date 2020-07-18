@@ -23,51 +23,50 @@ class LoginController extends AbstractActionController {
 
 	/** @return Response|ViewModel */
 	public function indexAction() {
-		/* @var FlashMessenger $FM */
-		/** @var Identity $Identity */
-		/** @var AuthenticationService $AS */
+		/**
+		 * @var User $User
+		 * @var FlashMessenger $FM
+		 * @var Identity $Identity
+		 * @var AuthenticationService $AS
+		 * @var CredentialTreatmentAdapter $Adapter
+		 **/
 		$Request  = $this->getRequest();
 		$Identity = $this->plugin( 'identity' );
 		$AS       = $Identity->getAuthenticationService();
 		$FM       = $this->plugin( 'flashMessenger' );
+		$Adapter  = $AS->getAdapter();
 
-		// if logged in go to home
 		if( $AS->hasIdentity() ) {
 			$FM->addInfoMessage( 'You are already logged in.' );
 			return $this->redirect()->toRoute( 'user' );
 		}
 
-		// not a post show self
 		if( !$Request->isPost() ) {
 			return new ViewModel( [ 'Form' => $this->Form ] );
 		}
 
 		$this->Form->setData( $Request->getPost() );
-
 		if( !$this->Form->isValid() ) {
-			return new ViewModel( [ 'Form' => $this->Form ] );
+			foreach( $this->Form->getMessages() as $error ) {
+				$FM->addErrorMessage( $error );
+			}
+			return $this->redirect()->refresh();
 		}
 
-		$post = $this->Form->getData();
+		$User = $this->Form->getData();
 
-		/** @var CredentialTreatmentAdapter $Adapter */
-		$Adapter = $AS->getAdapter();
-		$Adapter->setIdentity( $post[ 'username' ] )
-		        ->setCredential( $post[ 'password' ] );
-
+		$Adapter->setIdentity( $User->getUserName() )
+		        ->setCredential( $User->getPassword() );
 		$Result = $AS->authenticate( $Adapter );
-
 		if( !$Result->isValid() ) {
 			foreach( $Result->getMessages() as $error ) {
 				$FM->addErrorMessage( $error );
 			}
-			return new ViewModel( [ 'Form' => $this->Form ] );
+			return $this->redirect()->refresh();
 		}
 
-		$Storage  = $AS->getStorage();
-		$userData = $Adapter->getResultRowObject( [ 'id', 'username', 'password' ] );
-
-		$Storage->write( new User( $userData->username, $userData->password, $userData->id ) );
+		$userData = $Adapter->getResultRowObject( [ 'id', 'password' ] );
+		$AS->getStorage()->write( $User->setID( $userData->id )->setPassword( $userData->password ) );
 
 		$FM->addSuccessMessage( 'Successfully Logged In.' );
 

@@ -102,6 +102,18 @@ return [
 			[
 				'label' => 'User',
 				'route' => 'user',
+				'pages' => [
+					[
+						'label'  => 'Update Password',
+						'route'  => 'user/update_password',
+						'action' => 'index',
+					],
+					[
+						'label'  => 'Delete Account',
+						'route'  => 'user/delete',
+						'action' => 'index',
+					],
+				],
 			],
 			[
 				'label' => 'Login',

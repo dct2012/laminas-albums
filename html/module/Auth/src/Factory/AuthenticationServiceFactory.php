@@ -2,11 +2,12 @@
 
 namespace Auth\Factory;
 
-use Interop\Container\ContainerInterface;
-use Laminas\Authentication\Adapter\DbTable\CallbackCheckAdapter;
-use Laminas\Authentication\AuthenticationService;
+use User\Model\User;
 use Laminas\Db\Adapter\AdapterInterface;
+use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
+use Laminas\Authentication\AuthenticationService;
+use Laminas\Authentication\Adapter\DbTable\CallbackCheckAdapter;
 
 class AuthenticationServiceFactory implements FactoryInterface {
 	/**
@@ -16,13 +17,12 @@ class AuthenticationServiceFactory implements FactoryInterface {
 	 * @return AuthenticationService|object
 	 */
 	public function __invoke( ContainerInterface $container, $requestedName, array $options = null ) {
-		$dbAdapter   = $container->get( AdapterInterface::class );
 		$authAdapter = new CallbackCheckAdapter(
-			$dbAdapter,
+			$container->get( AdapterInterface::class ),
 			'users',
 			'username',
 			'password',
-			fn( $hash, $password ) => password_verify( $password, $hash )
+			fn( $hash, $password ) => User::verifyPassword( $hash, $password )
 		);
 
 		return new AuthenticationService( null, $authAdapter );

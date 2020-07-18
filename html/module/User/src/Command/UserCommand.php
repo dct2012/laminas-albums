@@ -2,15 +2,14 @@
 
 namespace User\Command;
 
-use Laminas\Db\ResultSet\HydratingResultSet;
-use Laminas\Db\Sql\Select;
-use Laminas\Hydrator\ReflectionHydrator;
-use RuntimeException;
-use Laminas\Db\Adapter\AdapterInterface;
-use Laminas\Db\Adapter\Driver\ResultInterface;
-use Laminas\Db\Sql\Insert;
-use Laminas\Db\Sql\Sql;
 use User\Model\User;
+use RuntimeException;
+use Laminas\Hydrator\ReflectionHydrator;
+use Laminas\Db\ResultSet\HydratingResultSet;
+use Laminas\Db\Adapter\AdapterInterface;
+use Laminas\Db\Adapter\Driver\Pdo\Result;
+use Laminas\Db\Adapter\Driver\ResultInterface;
+use Laminas\Db\Sql\{Delete, Select, Update, Insert, Sql};
 
 class UserCommand {
 	/** @var AdapterInterface */
@@ -34,23 +33,17 @@ class UserCommand {
 			throw new RuntimeException( "Username: {$username}, already exists!" );
 		}
 
-		$insert = new Insert( 'users' );
-		$insert->values(
-			[
-				'username' => $username,
-				'password' => $password,
-			]
-		);
+		$Insert = ( new Insert( 'users' ) )
+			->values( [ 'username' => $username, 'password' => $password ] );
 
-		$sql       = new Sql( $this->db );
-		$statement = $sql->prepareStatementForSqlObject( $insert );
-		$result    = $statement->execute();
-
-		if( !$result instanceof ResultInterface ) {
-			throw new RuntimeException( 'Database error occurred during user insert operation' );
+		$Result = ( new Sql( $this->db ) )
+			->prepareStatementForSqlObject( $Insert )
+			->execute();
+		if( !$Result instanceof ResultInterface ) {
+			throw new RuntimeException( 'Database error occurred during user insert operation!' );
 		}
 
-		return new User( $username, $password, $result->getGeneratedValue() );
+		return new User( $username, $password, $Result->getGeneratedValue() );
 	}
 
 	/**
@@ -58,34 +51,66 @@ class UserCommand {
 	 * @return User
 	 */
 	public function read( User $User ): User {
-		$username = $User->getUserName();
-
-		$select = ( new Select( 'users' ) )
+		$Select = ( new Select( 'users' ) )
 			->columns( [ 'id', 'username', 'password' ] )
-			->where( [ 'username' => $username ] );
+			->where( [ 'username' => $User->getUserName() ] );
 
-		$sql       = new Sql( $this->db );
-		$statement = $sql->prepareStatementForSqlObject( $select );
-		$result    = $statement->execute();
-
-		if( !$result instanceof ResultInterface ) {
-			throw new RuntimeException( 'Database error occurred during user insert operation' );
+		$Result = ( new Sql( $this->db ) )
+			->prepareStatementForSqlObject( $Select )
+			->execute();
+		if( !$Result instanceof ResultInterface ) {
+			throw new RuntimeException( 'Database error occurred during user read operation!' );
 		}
 
-		$resultSet = new HydratingResultSet( new ReflectionHydrator(), $User );
-		$resultSet->initialize( $result );
-		foreach( $resultSet as $r ) {
-			$User = $r;
+		foreach( ( new HydratingResultSet( new ReflectionHydrator(), $User ) )->initialize( $Result ) as $u ) {
+			$User = $u;
 		}
 
 		return $User;
 	}
 
-	public function update() {
+	/**
+	 * @param User $User
+	 * @return User
+	 */
+	public function update( User $User ): User {
+		$Update = ( new Update( 'users' ) )
+			->set( [ 'password' => $User->setPassword( User::hashPassword( $User->getPassword() ) )->getPassword() ] )
+			->where( [ 'username' => $User->getUserName() ] );
 
+		/* @var Result $Result */
+		$Result = ( new Sql( $this->db ) )
+			->prepareStatementForSqlObject( $Update )
+			->execute();
+
+		if( !$Result instanceof ResultInterface ) {
+			throw new RuntimeException( 'Database error occurred during updating user\'s password operation!' );
+		}
+		if( $Result->getAffectedRows() == 0 ) {
+			throw new RuntimeException( 'Failed to update user\'s password!' );
+		}
+
+		return $User;
 	}
 
-	public function delete() {
+	/**
+	 * @param User $User
+	 * @return User
+	 */
+	public function delete( User $User ): User {
+		$Delete = ( new Delete( 'users' ) )
+			->where( [ 'username' => $User->getUserName() ] );
 
+		$Result = ( new Sql( $this->db ) )
+			->prepareStatementForSqlObject( $Delete )
+			->execute();
+		if( !$Result instanceof ResultInterface ) {
+			throw new RuntimeException( 'Database error occurred during user delete operation!' );
+		}
+		if( $Result->getAffectedRows() == 0 ) {
+			throw new RuntimeException( 'Failed to delete user!' );
+		}
+
+		return $User;
 	}
 }

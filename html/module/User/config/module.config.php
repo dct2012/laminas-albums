@@ -2,22 +2,44 @@
 
 namespace User;
 
-use Laminas\Router\Http\Segment;
-use User\Controller\UserController;
-use User\Factory\UserControllerFactory;
+use Laminas\Router\Http\Literal;
+use User\Controller\{DeleteController, UpdatePasswordController, UserController};
+use User\Factory\{UserCommandFactory, DeleteControllerFactory, UserControllerFactory, UpdatePasswordControllerFactory};
 use User\Command\UserCommand;
-use User\Factory\UserCommandFactory;
 
 return [
 	'router'          => [
 		'routes' => [
 			'user' => [
-				'type'    => Segment::class,
-				'options' => [
+				'type'          => Literal::class,
+				'options'       => [
 					'route'    => '/user',
 					'defaults' => [
 						'controller' => UserController::class,
 						'action'     => 'index',
+					],
+				],
+				'may_terminate' => true,
+				'child_routes'  => [
+					'update_password' => [
+						'type'    => Literal::class,
+						'options' => [
+							'route'    => '/update_password',
+							'defaults' => [
+								'controller' => UpdatePasswordController::class,
+								'action'     => 'index',
+							],
+						],
+					],
+					'delete'          => [
+						'type'    => Literal::class,
+						'options' => [
+							'route'    => '/delete',
+							'defaults' => [
+								'controller' => DeleteController::class,
+								'action'     => 'index',
+							],
+						],
 					],
 				],
 			],
@@ -30,7 +52,9 @@ return [
 	],
 	'controllers'     => [
 		'factories' => [
-			UserController::class => UserControllerFactory::class,
+			UserController::class           => UserControllerFactory::class,
+			DeleteController::class         => DeleteControllerFactory::class,
+			UpdatePasswordController::class => UpdatePasswordControllerFactory::class,
 		],
 	],
 	'service_manager' => [
