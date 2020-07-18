@@ -4,7 +4,7 @@ namespace User\Form;
 
 use Laminas\Form\Form;
 
-class UserForm extends Form {
+class InfoForm extends Form {
 	public function __construct() {
 		parent::__construct( 'user' );
 

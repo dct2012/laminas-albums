@@ -1,11 +1,11 @@
 <?php
 
-use User\Form\UserForm;
+use User\Form\InfoForm;
 
 $title = 'Login';
 $this->headTitle( $title );
 
-/* @var UserForm $Form */
+/* @var InfoForm $Form */
 $userName = $Form->get( 'username' )
                  ->setAttribute( 'class', 'form-control' )
                  ->setAttribute( 'required', true )

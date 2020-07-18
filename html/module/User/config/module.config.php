@@ -32,18 +32,18 @@ return [
 					'route'    => '/user',
 					'defaults' => [
 						'controller' => UserController::class,
-						'action'     => 'index',
+						'action'     => 'info',
 					],
 				],
 				'may_terminate' => true,
 				'child_routes'  => [
-					'update_password' => [
+					'update' => [
 						'type'    => Literal::class,
 						'options' => [
-							'route'    => '/update_password',
+							'route'    => '/update',
 							'defaults' => [
-								'controller' => UpdatePasswordController::class,
-								'action'     => 'index',
+								'controller' => UserController::class,
+								'action'     => 'update',
 							],
 						],
 					],
@@ -52,8 +52,8 @@ return [
 						'options' => [
 							'route'    => '/delete',
 							'defaults' => [
-								'controller' => DeleteController::class,
-								'action'     => 'index',
+								'controller' => UserController::class,
+								'action'     => 'delete',
 							],
 						],
 					],
@@ -62,8 +62,8 @@ return [
 						'options' => [
 							'route'    => '/login',
 							'defaults' => [
-								'controller' => LoginController::class,
-								'action'     => 'index',
+								'controller' => UserController::class,
+								'action'     => 'login',
 							],
 						],
 					],
@@ -72,8 +72,8 @@ return [
 						'options' => [
 							'route'    => '/logout',
 							'defaults' => [
-								'controller' => LogoutController::class,
-								'action'     => 'index',
+								'controller' => UserController::class,
+								'action'     => 'logout',
 							],
 						],
 					],
@@ -82,8 +82,8 @@ return [
 						'options' => [
 							'route'    => '/signup',
 							'defaults' => [
-								'controller' => SignupController::class,
-								'action'     => 'index',
+								'controller' => UserController::class,
+								'action'     => 'signup',
 							],
 						],
 					],
@@ -98,12 +98,7 @@ return [
 	],
 	'controllers'     => [
 		'factories' => [
-			UserController::class           => UserControllerFactory::class,
-			LoginController::class          => LoginControllerFactory::class,
-			DeleteController::class         => DeleteControllerFactory::class,
-			LogoutController::class         => LogoutControllerFactory::class,
-			SignupController::class         => SignupControllerFactory::class,
-			UpdatePasswordController::class => UpdatePasswordControllerFactory::class,
+			UserController::class => UserControllerFactory::class,
 		],
 	],
 	'service_manager' => [

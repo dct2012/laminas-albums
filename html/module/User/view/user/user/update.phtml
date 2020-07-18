@@ -1,9 +1,9 @@
 <?php
 
-use User\Form\UpdatePasswordForm;
+use User\Form\UpdateForm;
 use User\Model\User;
 
-/* @var UpdatePasswordForm $Form */
+/* @var UpdateForm $Form */
 /* @var User $User */
 
 $title = 'Update Password';
@@ -27,7 +27,7 @@ $verifyNewPassword = $Form->get( 'verify_new_password' )
 $submit = $Form->get( 'update' )
                ->setAttribute( 'class', 'btn btn-primary' );
 
-$Form->setAttribute( 'action', $this->url( 'user/update_password', [ 'action' => 'index' ] ) )
+$Form->setAttribute( 'action', $this->url( 'user/update', [ 'action' => 'index' ] ) )
      ->setAttribute( 'method', 'post' )
      ->setAttribute( 'autocomplete', 'off' )
      ->prepare();
