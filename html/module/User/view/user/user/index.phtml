@@ -1,51 +1,58 @@
 <?php
+
+use Signup\Form\SignupForm;
+use User\Model\User;
+
 $title = 'User Info';
 $this->headTitle( $title );
 
-// This provides a default CSS class and placeholder text for the title element:
-$userName = $form->get( 'username' );
-$userName->setAttribute( 'class', 'form-control' );
-$userName->setAttribute( 'placeholder', 'Username' );
+/* @var SignupForm $Form */
+/* @var User $User */
+$userID   = $Form->get( 'id' )
+                 ->setAttribute( 'class', 'form-control' )
+                 ->setAttribute( 'placeholder', 'ID' )
+                 ->setAttribute( 'readonly', true )
+                 ->setValue( $User->getId() );
+$userName = $Form->get( 'username' )
+                 ->setAttribute( 'class', 'form-control' )
+                 ->setAttribute( 'placeholder', 'Username' )
+                 ->setAttribute( 'readonly', true )
+                 ->setValue( $User->getUserName() );
 
-// This provides a default CSS class and placeholder text for the artist element:
-$password = $form->get( 'password' );
-$password->setAttribute( 'class', 'form-control' );
-$password->setAttribute( 'placeholder', 'Password' );
-
-// This provides CSS classes for the submit button:
-$submit = $form->get( 'login' );
-$submit->setAttribute( 'class', 'btn btn-primary' );
-
-$form->setAttribute( 'action', $this->url( 'login', [ 'action' => 'index' ] ) );
-$form->prepare();
+$Form->prepare();
 
 ?>
 <div class="card">
     <div class="card-header">
-        <h1>User: <?= $user->getId() ?></h1>
+        <h1><?= $title ?></h1>
     </div>
     <div class="card-body">
-		<?= $this->form()->openTag( $form ); ?>
+		<?= $this->form()->openTag( $Form ); ?>
         <div class="form-group">
-			<?= $this->formLabel( $userName ) ?>
-			<?= $this->formElement( $userName ) ?>
-			<?= $this->V ?>
+            <div class="row">
+                <div class="col-2">
+					<?= $this->formLabel( $userID ) ?>
+                </div>
+                <div class="col-10">
+					<?= $this->formElement( $userID ) ?>
+					<?= $this->formElementErrors()->render( $userID, [ 'class' => 'help-block' ] ) ?>
+                </div>
+            </div>
         </div>
 
         <div class="form-group">
-			<?= $this->formLabel( $password ) ?>
-			<?= $this->formElement( $password ) ?>
-			<?= $this->formElementErrors()->render( $password, [ 'class' => 'help-block' ] ) ?>
-        </div>
-
-        <div class="text-right">
-			<?php
-			echo $this->formSubmit( $submit );
-			echo $this->formHidden( $form->get( 'id' ) );
-			echo $this->form()->closeTag();
-			?>
+            <div class="row">
+                <div class="col-2">
+					<?= $this->formLabel( $userName ) ?>
+                </div>
+                <div class="col-10">
+					<?= $this->formElement( $userName ) ?>
+					<?= $this->formElementErrors()->render( $userName, [ 'class' => 'help-block' ] ) ?>
+                </div>
+            </div>
         </div>
     </div>
     <div class="card-footer text-muted">
+        <a href="/update_password">Change Password</a>
     </div>
 </div>

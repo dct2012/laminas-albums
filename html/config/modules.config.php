@@ -12,7 +12,8 @@
  * This should be an array of module namespaces used in the application.
  */
 return [
-    'Laminas\Mvc\Plugin\Identity',
+    'Laminas\Mvc\Plugin\FlashMessenger',
+	'Laminas\Mvc\Plugin\Identity',
 	'Laminas\Session',
 	'Laminas\Paginator',
 	'Laminas\Navigation',
@@ -31,4 +32,5 @@ return [
 	'Signup',
 	'Login',
 	'Auth',
+	'Logout',
 ];

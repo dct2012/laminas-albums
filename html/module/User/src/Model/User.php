@@ -3,18 +3,18 @@
 namespace User\Model;
 
 class User {
-	/* @var int */
+	/* @var mixed */
 	private $id;
 	/* @var string */
-	private $username;
+	private string $username;
 	/* @var string */
-	private $password;
+	private string $password;
 
 	/**
 	 * User constructor.
 	 * @param string $username
 	 * @param string $password
-	 * @param null $id
+	 * @param int|null $id
 	 */
 	public function __construct( string $username, string $password, $id = null ) {
 		$this->username = $username;
@@ -22,18 +22,18 @@ class User {
 		$this->id       = $id;
 	}
 
-	/* @return int|null */
+	/* @return mixed */
 	public function getId() {
 		return $this->id;
 	}
 
 	/* @return string */
-	public function getUserName() {
+	public function getUserName(): string {
 		return $this->username;
 	}
 
 	/* @return string */
-	public function getPassword() {
+	public function getPassword(): string {
 		return $this->password;
 	}
 }

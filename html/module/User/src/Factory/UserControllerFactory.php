@@ -8,9 +8,15 @@ use User\Controller\UserController;
 use User\Form\UserForm;
 
 class UserControllerFactory implements FactoryInterface {
+	/**
+	 * @param ContainerInterface $container
+	 * @param string $requestedName
+	 * @param array|null $options
+	 * @return object|UserController
+	 */
 	public function __invoke( ContainerInterface $container, $requestedName, array $options = null ) {
-		$formManager = $container->get( 'FormElementManager' );
+		$FormManager = $container->get( 'FormElementManager' );
 
-		return new UserController( $formManager->get( UserForm::class ) );
+		return new UserController( $FormManager->get( UserForm::class ) );
 	}
 }

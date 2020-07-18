@@ -2,13 +2,14 @@
 
 namespace Signup\Form;
 
+use Laminas\Form\Element\Csrf;
 use User\Model\User;
 use Laminas\Form\Form;
 use Laminas\Hydrator\ReflectionHydrator;
 
 class SignupForm extends Form {
+	/** @param null $name */
 	public function __construct( $name = null ) {
-		// We will ignore the name provided to the constructor
 		parent::__construct( 'signup' );
 
 		$this->setHydrator( new ReflectionHydrator() );
@@ -25,28 +26,29 @@ class SignupForm extends Form {
 				'name'    => 'username',
 				'type'    => 'text',
 				'options' => [
-					'label' => 'Username',
+					'label' => 'Username:',
 				],
 			]
 		);
 		$this->add(
 			[
 				'name'    => 'password',
-				'type'    => 'text',
+				'type'    => 'password',
 				'options' => [
-					'label' => 'Password',
+					'label' => 'Password:',
 				],
 			]
 		);
 		$this->add(
 			[
-				'name'    => 'password-retype',
-				'type'    => 'text',
+				'name'    => 'verify-password',
+				'type'    => 'password',
 				'options' => [
-					'label' => 'Password Retype',
+					'label' => 'Verify Password:',
 				],
 			]
 		);
+		$this->add( new Csrf( 'security' ) );
 		$this->add(
 			[
 				'name'       => 'signup',

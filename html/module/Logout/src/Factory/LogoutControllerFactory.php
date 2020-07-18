@@ -1,26 +1,22 @@
 <?php
 
-namespace Signup\Factory;
+namespace Logout\Factory;
 
 use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
-use User\Command\UserCommand;
-use Signup\Controller\SignupController;
-use Signup\Form\SignupForm;
+use Logout\Controller\LogoutController;
+use Logout\Form\LogoutForm;
 
-class SignupControllerFactory implements FactoryInterface {
+class LogoutControllerFactory implements FactoryInterface {
 	/**
 	 * @param ContainerInterface $container
 	 * @param string $requestedName
 	 * @param array|null $options
-	 * @return object|SignupController
+	 * @return LogoutController|object
 	 */
 	public function __invoke( ContainerInterface $container, $requestedName, array $options = null ) {
 		$FormManager = $container->get( 'FormElementManager' );
 
-		return new SignupController(
-			$container->get( UserCommand::class ),
-			$FormManager->get( SignupForm::class )
-		);
+		return new LogoutController( $FormManager->get( LogoutForm::class ) );
 	}
 }

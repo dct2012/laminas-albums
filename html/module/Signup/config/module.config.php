@@ -3,34 +3,32 @@
 namespace Signup;
 
 use Laminas\Router\Http\Segment;
+use Signup\Controller\SignupController;
+use Signup\Factory\SignupControllerFactory;
 
 return [
-	'router'          => [
+	'router'       => [
 		'routes' => [
 			'signup' => [
 				'type'    => Segment::class,
 				'options' => [
 					'route'    => '/signup',
 					'defaults' => [
-						'controller' => Controller\SignupController::class,
+						'controller' => SignupController::class,
 						'action'     => 'index',
 					],
 				],
 			],
 		],
 	],
-	'view_manager'    => [
+	'view_manager' => [
 		'template_path_stack' => [
 			'signup' => __DIR__.'/../view',
 		],
 	],
-	'controllers'     => [
+	'controllers'  => [
 		'factories' => [
-			Controller\SignupController::class => Factory\SignupControllerFactory::class,
+			SignupController::class => SignupControllerFactory::class,
 		],
-	],
-	'service_manager' => [
-		'aliases'   => [],
-		'factories' => [],
 	],
 ];

@@ -1,6 +1,6 @@
 <?php
 
-namespace Signup;
+namespace Logout;
 
 class Module {
 	/** @return array */

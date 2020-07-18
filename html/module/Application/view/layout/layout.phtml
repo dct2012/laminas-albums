@@ -29,7 +29,7 @@
 	<?= $this->headScript() ?>
 </head>
 <body>
-<nav class="navbar navbar-expand-md navbar-dark mb-4" role="navigation">
+<nav class="navbar navbar-expand-md navbar-dark" role="navigation">
     <div class="container">
         <div class="navbar-header">
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -47,16 +47,30 @@
 			         ->setMaxDepth( 0 )
 			         ->setUlClass( 'nav navbar-nav' ) ?>
         </div>
-        <button type="button" class="btn btn-danger">Logout</button>
+		<?php if( $this->identity() ) { ?>
+            <form action="logout" method="post">
+                <button type="submit" class="btn btn-danger">Logout</button>
+            </form>
+		<?php } ?>
     </div>
 </nav>
+<?= $this->navigation( 'navigation' )
+         ->breadcrumbs()
+         ->setMinDepth( 0 )
+         ->setPartial( 'partial/breadcrumb' ) ?>
 <div class="container">
-	<?= $this->navigation( 'navigation' )
-	         ->breadcrumbs()
-	         ->setMinDepth( 0 )
-	         ->setPartial( 'partial/breadcrumb' ) ?>
-	<?= $this->content ?>
-    <hr>
+	<?php
+	$FM = $this->flashMessenger()
+	           ->setMessageOpenFormat(
+		           '<div%s><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><div>'
+	           )
+	           ->setMessageSeparatorString( '</div><div>' )
+	           ->setMessageCloseString( '</div></div>' );
+	echo $FM->render( 'success', [ 'alert', 'alert-dismissible', 'alert-success' ] );
+	echo $FM->render( 'info', [ 'alert', 'alert-dismissible', 'alert-info' ] );
+	echo $FM->render( 'error', [ 'alert', 'alert-dismissible', 'alert-danger' ] );
+	echo $this->content;
+	?>
 </div>
 <?= $this->inlineScript()
          ->prependFile( $this->basePath( 'js/bootstrap.min.js' ) )

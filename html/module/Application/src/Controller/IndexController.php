@@ -16,10 +16,10 @@ use Laminas\View\Model\ViewModel;
 
 class IndexController extends AbstractActionController {
 	public function indexAction() {
-		/* @var AuthenticationService */
-		$authenticationService = $authenticationService = $this->plugin( 'identity' )->getAuthenticationService();
+		/* @var AuthenticationService $AS */
+		$AS = $this->plugin( 'identity' )->getAuthenticationService();
 
-		if( !$authenticationService->hasIdentity() ) {
+		if( !$AS->hasIdentity() ) {
 			return $this->redirect()->toRoute( 'login' );
 		}
 

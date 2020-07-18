@@ -3,10 +3,11 @@
 namespace Login\Form;
 
 use Laminas\Form\Form;
+use Laminas\Form\Element\Csrf;
 
 class LoginForm extends Form {
+	/** @param null $name */
 	public function __construct( $name = null ) {
-		// We will ignore the name provided to the constructor
 		parent::__construct( 'login' );
 
 		$this->add(
@@ -20,19 +21,20 @@ class LoginForm extends Form {
 				'name'    => 'username',
 				'type'    => 'text',
 				'options' => [
-					'label' => 'Username',
+					'label' => 'Username:',
 				],
 			]
 		);
 		$this->add(
 			[
 				'name'    => 'password',
-				'type'    => 'text',
+				'type'    => 'password',
 				'options' => [
-					'label' => 'Password',
+					'label' => 'Password:',
 				],
 			]
 		);
+		$this->add( new Csrf( 'security' ) );
 		$this->add(
 			[
 				'name'       => 'login',

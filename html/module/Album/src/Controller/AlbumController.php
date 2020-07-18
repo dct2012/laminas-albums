@@ -13,10 +13,9 @@ use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 
 class AlbumController extends AbstractActionController {
-	// Add this property:
-	private $table;
+	/* @var AlbumTable */
+	private AlbumTable $table;
 
-	// Add this constructor:
 	public function __construct( AlbumTable $table ) {
 		$this->table = $table;
 	}

@@ -20,7 +20,10 @@
     "laminas/laminas-paginator": "^2.8",
     "laminas/laminas-authentication": "^2.7",
     "laminas/laminas-session": "^2.9",
-    "laminas/laminas-mvc-plugin-identity": "^1.1"
+    "laminas/laminas-mvc-plugin-identity": "^1.1",
+    "laminas/laminas-mvc-plugin-flashmessenger": "^1.2",
+    "laminas/laminas-validator": "^2.13",
+    "laminas/laminas-math": "^3.2"
   },
   "autoload": {
     "psr-4": {
@@ -30,7 +33,8 @@
       "Signup\\": "module/Signup/src/",
       "Login\\": "module/Login/src/",
       "Auth\\": "module/Auth/src/",
-      "User\\": "module/User/src/"
+      "User\\": "module/User/src/",
+      "Logout\\": "module/Logout/src/"
     }
   },
   "autoload-dev": {

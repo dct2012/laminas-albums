@@ -3,6 +3,10 @@
 namespace User;
 
 use Laminas\Router\Http\Segment;
+use User\Controller\UserController;
+use User\Factory\UserControllerFactory;
+use User\Command\UserCommand;
+use User\Factory\UserCommandFactory;
 
 return [
 	'router'          => [
@@ -12,7 +16,7 @@ return [
 				'options' => [
 					'route'    => '/user',
 					'defaults' => [
-						'controller' => Controller\UserController::class,
+						'controller' => UserController::class,
 						'action'     => 'index',
 					],
 				],
@@ -26,14 +30,12 @@ return [
 	],
 	'controllers'     => [
 		'factories' => [
-			Controller\UserController::class => Factory\UserControllerFactory::class,
+			UserController::class => UserControllerFactory::class,
 		],
 	],
 	'service_manager' => [
-		'aliases'   => [
-		],
 		'factories' => [
-			Command\UserCommand::class => Factory\UserCommandFactory::class,
+			UserCommand::class => UserCommandFactory::class,
 		],
 	],
 ];

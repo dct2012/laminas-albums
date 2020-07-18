@@ -3,29 +3,29 @@
 namespace User\Controller;
 
 use Laminas\Authentication\AuthenticationService;
+use Laminas\Http\Response;
 use User\Form\UserForm;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 
 class UserController extends AbstractActionController {
 	/* @var UserForm */
-	private UserForm $form;
+	private UserForm $Form;
 
-	/**
-	 * @param UserForm $form
-	 */
-	public function __construct( UserForm $form ) {
-		$this->form = $form;
+	/* @param UserForm $Form */
+	public function __construct( UserForm $Form ) {
+		$this->Form = $Form;
 	}
 
+	/** @return Response|ViewModel */
 	public function indexAction() {
 		/* @var AuthenticationService */
-		$authenticationService = $authenticationService = $this->plugin( 'identity' )->getAuthenticationService();
+		$AS = $this->plugin( 'identity' )->getAuthenticationService();
 
-		if( !$authenticationService->hasIdentity() ) {
+		if( !$AS->hasIdentity() ) {
 			return $this->redirect()->toRoute( 'login' );
 		}
 
-		return new ViewModel( [ 'form' => $this->form, 'user' => $authenticationService->getIdentity() ] );
+		return new ViewModel( [ 'Form' => $this->Form, 'User' => $AS->getIdentity() ] );
 	}
 }

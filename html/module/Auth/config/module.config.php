@@ -3,11 +3,12 @@
 namespace Auth;
 
 use Laminas\Authentication\AuthenticationServiceInterface;
+use Auth\Factory\AuthenticationServiceFactory;
 
 return [
 	'service_manager' => [
 		'factories' => [
-			AuthenticationServiceInterface::class => Factory\AuthenticationServiceFactory::class,
+			AuthenticationServiceInterface::class => AuthenticationServiceFactory::class,
 		],
 	],
 ];

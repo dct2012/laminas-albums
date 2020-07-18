@@ -9,6 +9,12 @@ use Laminas\Db\Adapter\AdapterInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class AuthenticationServiceFactory implements FactoryInterface {
+	/**
+	 * @param ContainerInterface $container
+	 * @param string $requestedName
+	 * @param array|null $options
+	 * @return AuthenticationService|object
+	 */
 	public function __invoke( ContainerInterface $container, $requestedName, array $options = null ) {
 		$dbAdapter   = $container->get( AdapterInterface::class );
 		$authAdapter = new CallbackCheckAdapter(

@@ -8,9 +8,15 @@ use Login\Controller\LoginController;
 use Login\Form\LoginForm;
 
 class LoginControllerFactory implements FactoryInterface {
+	/**
+	 * @param ContainerInterface $container
+	 * @param string $requestedName
+	 * @param array|null $options
+	 * @return LoginController|object
+	 */
 	public function __invoke( ContainerInterface $container, $requestedName, array $options = null ) {
-		$formManager = $container->get( 'FormElementManager' );
+		$FormManager = $container->get( 'FormElementManager' );
 
-		return new LoginController( $formManager->get( LoginForm::class ) );
+		return new LoginController( $FormManager->get( LoginForm::class ) );
 	}
 }

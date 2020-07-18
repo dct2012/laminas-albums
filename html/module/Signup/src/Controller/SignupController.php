@@ -2,49 +2,97 @@
 
 namespace Signup\Controller;
 
+use Laminas\Authentication\AuthenticationService;
+use Laminas\Http\Response;
+use Laminas\Mvc\Plugin\FlashMessenger\FlashMessenger;
+use Laminas\Mvc\Plugin\Identity\Identity;
+use Laminas\Validator\Identical;
+use Laminas\Validator\StringLength;
 use User\Command\UserCommand;
 use Signup\Form\SignupForm;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
+use Exception;
+use User\Model\User;
 
 class SignupController extends AbstractActionController {
 	/** @var UserCommand */
-	protected $command;
+	protected UserCommand $Command;
 	/* @var SignupForm */
-	private $form;
+	private SignupForm $Form;
 
 	/**
-	 * @param UserCommand $command
-	 * @param SignupForm $form
+	 * @param UserCommand $Command
+	 * @param SignupForm $Form
 	 */
-	public function __construct( UserCommand $command, SignupForm $form ) {
-		$this->command = $command;
-		$this->form    = $form;
+	public function __construct( UserCommand $Command, SignupForm $Form ) {
+		$this->Command = $Command;
+		$this->Form    = $Form;
 	}
 
+	/** @return Response|ViewModel */
 	public function indexAction() {
-		$request   = $this->getRequest();
-		$viewModel = new ViewModel( [ 'form' => $this->form ] );
+		/* @var FlashMessenger $FM */
+		/** @var Identity $Identity */
+		/** @var AuthenticationService $AS */
+		$Request  = $this->getRequest();
+		$Identity = $this->plugin( 'identity' );
+		$AS       = $Identity->getAuthenticationService();
+		$FM       = $this->plugin( 'flashMessenger' );
 
-		if( !$request->isPost() ) {
-			return $viewModel;
+		// if logged in go to home
+		if( $AS->hasIdentity() ) {
+			$FM->addInfoMessage( 'You are already logged in.' );
+			return $this->redirect()->toRoute( 'home' );
 		}
 
-		$this->form->setData( $request->getPost() );
-
-		if( !$this->form->isValid() ) {
-			return $viewModel;
+		if( !$Request->isPost() ) {
+			return new ViewModel( [ 'Form' => $this->Form ] );
 		}
 
-		$user = $this->form->getData();
+		$data = $Request->getPost();
+
+
+		$Identical = new Identical( $data[ 'password' ] );
+		$Identical->setMessage( 'Passwords are not identical!' );
+		if( !$Identical->isValid( $data[ 'verify-password' ] ) ) {
+			foreach( $Identical->getMessages() as $error ) {
+				$FM->addErrorMessage( $error );
+			}
+			return new ViewModel( [ 'Form' => $this->Form ] );
+		}
+
+		$StringLength = new StringLength( [ 'min' => 8, 'max' => 100 ] );
+		$StringLength->setMessage( 'The password is less than %min% characters long', $StringLength::TOO_SHORT );
+		$StringLength->setMessage( 'The password is more than %max% characters long', $StringLength::TOO_LONG );
+		if( !$StringLength->isValid( $data[ 'verify-password' ] ) ) {
+			foreach( $StringLength->getMessages() as $error ) {
+				$FM->addErrorMessage( $error );
+			}
+			return new ViewModel( [ 'Form' => $this->Form ] );
+		}
+
+		$this->Form->setData( $data );
+
+		if( !$this->Form->isValid() ) {
+			foreach( $this->Form->getMessages() as $error ) {
+				$FM->addErrorMessage( $error );
+			}
+			return new ViewModel( [ 'Form' => $this->Form ] );
+		}
+
+		/* @var User $User */
+		$User = $this->Form->getData();
 
 		try {
-			$user = $this->command->create( $user );
-		} catch( \Exception $ex ) {
-			// An exception occurred; we may want to log this later and/or
-			// report it to the user. For now, we'll just re-throw.
-			throw $ex;
+			$User = $this->Command->create( $User );
+		} catch( Exception $e ) {
+			$FM->addErrorMessage( $e->getMessage() );
+
+			return new ViewModel( [ 'Form' => $this->Form ] );
 		}
+
+		$FM->addSuccessMessage( "Successfully signed up user: {$User->getUserName()}." );
 
 		return $this->redirect()->toRoute( 'login' );
 	}
