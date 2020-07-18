@@ -20,7 +20,7 @@ class IndexController extends AbstractActionController {
 		$AS = $this->plugin( 'identity' )->getAuthenticationService();
 
 		if( !$AS->hasIdentity() ) {
-			return $this->redirect()->toRoute( 'login' );
+			return $this->redirect()->toRoute( 'user/login' );
 		}
 
 		return new ViewModel();

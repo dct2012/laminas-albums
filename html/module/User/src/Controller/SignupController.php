@@ -1,11 +1,11 @@
 <?php
 
-namespace Signup\Controller;
+namespace User\Controller;
 
 use Exception;
 use User\Model\User;
+use User\Form\SignupForm;
 use User\Command\UserCommand;
-use Signup\Form\SignupForm;
 use Laminas\Http\Response;
 use Laminas\View\Model\ViewModel;
 use Laminas\Validator\{Identical, StringLength};
@@ -31,9 +31,11 @@ class SignupController extends AbstractActionController {
 
 	/** @return Response|ViewModel */
 	public function indexAction() {
-		/* @var FlashMessenger $FM */
-		/** @var Identity $Identity */
-		/** @var AuthenticationService $AS */
+		/**
+		 * @var FlashMessenger $FM
+		 * @var Identity $Identity
+		 * @var AuthenticationService $AS
+		 */
 		$Request  = $this->getRequest();
 		$Identity = $this->plugin( 'identity' );
 		$AS       = $Identity->getAuthenticationService();
@@ -89,6 +91,6 @@ class SignupController extends AbstractActionController {
 
 		$FM->addSuccessMessage( "Successfully signed up user: {$User->getUserName()}." );
 
-		return $this->redirect()->toRoute( 'login' );
+		return $this->redirect()->toRoute( 'user/login' );
 	}
 }

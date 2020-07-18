@@ -1,15 +1,15 @@
 <?php
 
-namespace Signup\Form;
+namespace User\Form;
 
-use Laminas\Form\Element\Csrf;
 use User\Model\User;
 use Laminas\Form\Form;
+use Laminas\Form\Element\Csrf;
 use Laminas\Hydrator\ReflectionHydrator;
 
-class SignupForm extends Form {
+class LoginForm extends Form {
 	public function __construct() {
-		parent::__construct( 'signup' );
+		parent::__construct( 'login' );
 
 		$this->setHydrator( new ReflectionHydrator() );
 		$this->setObject( new User( '', '' ) );
@@ -38,23 +38,14 @@ class SignupForm extends Form {
 				],
 			]
 		);
-		$this->add(
-			[
-				'name'    => 'verify-password',
-				'type'    => 'password',
-				'options' => [
-					'label' => 'Verify Password:',
-				],
-			]
-		);
 		$this->add( new Csrf( 'security' ) );
 		$this->add(
 			[
-				'name'       => 'signup',
+				'name'       => 'login',
 				'type'       => 'submit',
 				'attributes' => [
-					'value' => 'Sign Up',
-					'id'    => 'signupButton',
+					'value' => 'Login',
+					'id'    => 'loginButton',
 				],
 			]
 		);

@@ -2,10 +2,10 @@
 
 namespace User\Form;
 
-use Laminas\Form\Element\Csrf;
-use Laminas\Form\Form;
-use Laminas\Hydrator\ReflectionHydrator;
 use User\Model\User;
+use Laminas\Form\Form;
+use Laminas\Form\Element\Csrf;
+use Laminas\Hydrator\ReflectionHydrator;
 
 class UpdatePasswordForm extends Form {
 	public function __construct() {

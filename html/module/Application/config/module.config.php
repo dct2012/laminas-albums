@@ -109,19 +109,11 @@ return [
 						'action' => 'index',
 					],
 					[
-						'label'  => 'Delete Account',
+						'label'  => 'Delete User',
 						'route'  => 'user/delete',
 						'action' => 'index',
 					],
 				],
-			],
-			[
-				'label' => 'Login',
-				'route' => 'login',
-			],
-			[
-				'label' => 'Signup',
-				'route' => 'signup',
 			],
 		],
 	],

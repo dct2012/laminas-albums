@@ -1,12 +1,11 @@
 <?php
 
-namespace Logout\Form;
+namespace User\Form;
 
 use Laminas\Form\Form;
 
 class LogoutForm extends Form {
-	/** @param null $name */
-	public function __construct( $name = null ) {
+	public function __construct() {
 		parent::__construct( 'logout' );
 
 		$this->add(

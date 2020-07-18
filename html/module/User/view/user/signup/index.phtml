@@ -1,6 +1,6 @@
 <?php
 
-use Signup\Form\SignupForm;
+use User\Form\SignupForm;
 
 $title = 'Sign Up';
 $this->headTitle( $title );
@@ -24,7 +24,7 @@ $verifyPassword = $Form->get( 'verify-password' )
 $submit = $Form->get( 'signup' )
                ->setAttribute( 'class', 'btn btn-primary' );
 
-$Form->setAttribute( 'action', $this->url( 'signup', [ 'action' => 'index' ] ) )
+$Form->setAttribute( 'action', $this->url( 'user/signup', [ 'action' => 'index' ] ) )
      ->setAttribute( 'method', 'post' )
      ->setAttribute( 'autocomplete', 'off' )
      ->prepare();
@@ -84,6 +84,6 @@ $Form->setAttribute( 'action', $this->url( 'signup', [ 'action' => 'index' ] ) )
 		<?= $this->form()->closeTag() ?>
     </div>
     <div class="card-footer text-muted">
-        Already have a account? <a href="/login">Login</a>.
+        Already have a account? <a href="/user/login">Login</a>.
     </div>
 </div>

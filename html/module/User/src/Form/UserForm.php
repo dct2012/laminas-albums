@@ -5,9 +5,7 @@ namespace User\Form;
 use Laminas\Form\Form;
 
 class UserForm extends Form {
-	/** @param null $name */
-	public function __construct( $name = null ) {
-		// We will ignore the name provided to the constructor
+	public function __construct() {
 		parent::__construct( 'user' );
 
 		$this->add(

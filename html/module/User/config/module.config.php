@@ -2,10 +2,26 @@
 
 namespace User;
 
-use Laminas\Router\Http\Literal;
-use User\Controller\{DeleteController, UpdatePasswordController, UserController};
-use User\Factory\{UserCommandFactory, DeleteControllerFactory, UserControllerFactory, UpdatePasswordControllerFactory};
+use User\Controller\{
+	LoginController,
+	LogoutController,
+	SignupController,
+	UserController,
+	DeleteController,
+	UpdatePasswordController
+};
 use User\Command\UserCommand;
+use User\Factory\{LoginControllerFactory,
+	LogoutControllerFactory,
+	SignupControllerFactory,
+	UserCommandFactory,
+	UserControllerFactory,
+	DeleteControllerFactory,
+	AuthenticationServiceFactory,
+	UpdatePasswordControllerFactory
+};
+use Laminas\Router\Http\Literal;
+use Laminas\Authentication\AuthenticationServiceInterface;
 
 return [
 	'router'          => [
@@ -41,6 +57,36 @@ return [
 							],
 						],
 					],
+					'login'           => [
+						'type'    => Literal::class,
+						'options' => [
+							'route'    => '/login',
+							'defaults' => [
+								'controller' => LoginController::class,
+								'action'     => 'index',
+							],
+						],
+					],
+					'logout'          => [
+						'type'    => Literal::class,
+						'options' => [
+							'route'    => '/logout',
+							'defaults' => [
+								'controller' => LogoutController::class,
+								'action'     => 'index',
+							],
+						],
+					],
+					'signup'          => [
+						'type'    => Literal::class,
+						'options' => [
+							'route'    => '/signup',
+							'defaults' => [
+								'controller' => SignupController::class,
+								'action'     => 'index',
+							],
+						],
+					],
 				],
 			],
 		],
@@ -53,13 +99,17 @@ return [
 	'controllers'     => [
 		'factories' => [
 			UserController::class           => UserControllerFactory::class,
+			LoginController::class          => LoginControllerFactory::class,
 			DeleteController::class         => DeleteControllerFactory::class,
+			LogoutController::class         => LogoutControllerFactory::class,
+			SignupController::class         => SignupControllerFactory::class,
 			UpdatePasswordController::class => UpdatePasswordControllerFactory::class,
 		],
 	],
 	'service_manager' => [
 		'factories' => [
-			UserCommand::class => UserCommandFactory::class,
+			UserCommand::class                    => UserCommandFactory::class,
+			AuthenticationServiceInterface::class => AuthenticationServiceFactory::class,
 		],
 	],
 ];

@@ -19,7 +19,7 @@ $password = $Form->get( 'password' )
 $submit = $Form->get( 'login' )
                ->setAttribute( 'class', 'btn btn-primary' );
 
-$Form->setAttribute( 'action', $this->url( 'login', [ 'action' => 'index' ] ) )
+$Form->setAttribute( 'action', $this->url( 'user/login', [ 'action' => 'index' ] ) )
      ->setAttribute( 'method', 'post' )
      ->setAttribute( 'autocomplete', 'off' )
      ->prepare();
@@ -65,6 +65,6 @@ $Form->setAttribute( 'action', $this->url( 'login', [ 'action' => 'index' ] ) )
 		<?= $this->form()->closeTag() ?>
     </div>
     <div class="card-footer text-muted">
-        Don't have an account? <a href="/signup">Sign up</a>.
+        Don't have an account? <a href="/user/signup">Sign up</a>.
     </div>
 </div>

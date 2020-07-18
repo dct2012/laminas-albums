@@ -1,13 +1,13 @@
 <?php
 
-namespace Logout\Controller;
+namespace User\Controller;
 
 use Laminas\Authentication\AuthenticationService;
 use Laminas\Http\Response;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\Mvc\Plugin\FlashMessenger\FlashMessenger;
 use Laminas\View\Model\ViewModel;
-use Logout\Form\LogoutForm;
+use User\Form\LogoutForm;
 
 class LogoutController extends AbstractActionController {
 	/* @var LogoutForm */
@@ -28,7 +28,7 @@ class LogoutController extends AbstractActionController {
 
 		if( !$AS->hasIdentity() ) {
 			$FM->addErrorMessage( 'You have to login before you can logout!' );
-			return $this->redirect()->toRoute( 'login' );
+			return $this->redirect()->toRoute( 'user/login' );
 		}
 
 		if( !$Request->isPost() ) {
@@ -46,6 +46,6 @@ class LogoutController extends AbstractActionController {
 		$AS->clearIdentity();
 		$FM->addSuccessMessage( 'Successfully Logged Out.' );
 
-		return $this->redirect()->toRoute( 'login' );
+		return $this->redirect()->toRoute( 'user/login' );
 	}
 }

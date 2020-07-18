@@ -2,12 +2,12 @@
 
 namespace User\Controller;
 
-use Laminas\Authentication\AuthenticationService;
-use Laminas\Http\Response;
-use Laminas\Mvc\Plugin\FlashMessenger\FlashMessenger;
 use User\Form\UserForm;
-use Laminas\Mvc\Controller\AbstractActionController;
+use Laminas\Http\Response;
 use Laminas\View\Model\ViewModel;
+use Laminas\Authentication\AuthenticationService;
+use Laminas\Mvc\Controller\AbstractActionController;
+use Laminas\Mvc\Plugin\FlashMessenger\FlashMessenger;
 
 class UserController extends AbstractActionController {
 	/* @var UserForm */
@@ -29,7 +29,7 @@ class UserController extends AbstractActionController {
 
 		if( !$AS->hasIdentity() ) {
 			$FM->addErrorMessage( 'You have to be logged in to view user info!' );
-			return $this->redirect()->toRoute( 'login' );
+			return $this->redirect()->toRoute( 'user/login' );
 		}
 
 		return new ViewModel( [ 'Form' => $this->Form, 'User' => $AS->getIdentity() ] );

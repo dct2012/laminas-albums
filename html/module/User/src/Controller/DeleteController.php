@@ -46,7 +46,7 @@ class DeleteController extends AbstractActionController {
 
 		if( !$AS->hasIdentity() ) {
 			$FM->addErrorMessage( 'You must be logged in to delete your account!' );
-			return $this->redirect()->toRoute( 'login' );
+			return $this->redirect()->toRoute( 'user/login' );
 		}
 
 		$User = $AS->getIdentity();
@@ -85,6 +85,6 @@ class DeleteController extends AbstractActionController {
 		$AS->clearIdentity();
 		$FM->addSuccessMessage( "Successfully deleted account: {$User->getUserName()}." );
 
-		return $this->redirect()->toRoute( 'login' );
+		return $this->redirect()->toRoute( 'user/login' );
 	}
 }

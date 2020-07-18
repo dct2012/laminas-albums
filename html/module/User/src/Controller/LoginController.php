@@ -1,16 +1,16 @@
 <?php
 
-namespace Login\Controller;
+namespace User\Controller;
 
-use Laminas\Authentication\Adapter\DbTable\CredentialTreatmentAdapter;
-use Laminas\Authentication\AuthenticationService;
-use Laminas\Http\Response;
-use Laminas\Mvc\Plugin\FlashMessenger\FlashMessenger;
-use Laminas\Mvc\Plugin\Identity\Identity;
-use Login\Form\LoginForm;
-use Laminas\Mvc\Controller\AbstractActionController;
-use Laminas\View\Model\ViewModel;
 use User\Model\User;
+use User\Form\LoginForm;
+use Laminas\Http\Response;
+use Laminas\View\Model\ViewModel;
+use Laminas\Mvc\Plugin\Identity\Identity;
+use Laminas\Mvc\Controller\AbstractActionController;
+use Laminas\Mvc\Plugin\FlashMessenger\FlashMessenger;
+use Laminas\Authentication\AuthenticationService;
+use Laminas\Authentication\Adapter\DbTable\CredentialTreatmentAdapter;
 
 class LoginController extends AbstractActionController {
 	/* @var LoginForm */

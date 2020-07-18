@@ -1,6 +1,6 @@
 <?php
 
-namespace Auth\Factory;
+namespace User\Factory;
 
 use User\Model\User;
 use Laminas\Db\Adapter\AdapterInterface;

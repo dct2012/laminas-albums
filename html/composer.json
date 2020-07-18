@@ -30,11 +30,7 @@
       "Application\\": "module/Application/src/",
       "Album\\": "module/Album/src/",
       "Blog\\": "module/Blog/src/",
-      "Signup\\": "module/Signup/src/",
-      "Login\\": "module/Login/src/",
-      "Auth\\": "module/Auth/src/",
-      "User\\": "module/User/src/",
-      "Logout\\": "module/Logout/src/"
+      "User\\": "module/User/src/"
     }
   },
   "autoload-dev": {

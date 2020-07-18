@@ -47,7 +47,7 @@ class UpdatePasswordController extends AbstractActionController {
 
 		if( !$AS->hasIdentity() ) {
 			$FM->addErrorMessage( 'You must be logged in to update password!' );
-			return $this->redirect()->toRoute( 'login' );
+			return $this->redirect()->toRoute( 'user/login' );
 		}
 
 		$User = $AS->getIdentity();
@@ -109,6 +109,6 @@ class UpdatePasswordController extends AbstractActionController {
 		$AS->clearIdentity();
 		$FM->addSuccessMessage( "Successfully updated password for user: {$User->getUserName()}." );
 
-		return $this->redirect()->toRoute( 'login' );
+		return $this->redirect()->toRoute( 'user/login' );
 	}
 }

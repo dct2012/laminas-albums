@@ -3,7 +3,7 @@
 use User\Form\DeleteForm;
 use User\Model\User;
 
-$title = 'Delete Account';
+$title = 'Delete User';
 $this->headTitle( $title );
 
 /* @var DeleteForm $Form */
@@ -30,7 +30,7 @@ $Form->setAttribute( 'action', $this->url( 'user/delete', [ 'action' => 'index' 
     <div class="card-body">
 		<?= $this->form()->openTag( $Form ) ?>
         <div class="alert alert-danger">
-            If you are sure you want to delete your account, enter your password and click Delete.
+            If you are sure you want to delete your user, enter your password and click Delete.
         </div>
         <hr>
 

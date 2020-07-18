@@ -48,7 +48,7 @@
 			         ->setUlClass( 'nav navbar-nav' ) ?>
         </div>
 		<?php if( $this->identity() ) { ?>
-            <form action="/logout" method="post">
+            <form action="/user/logout" method="post">
                 <button type="submit" class="btn btn-danger">Logout</button>
             </form>
 		<?php } ?>

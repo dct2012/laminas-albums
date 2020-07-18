@@ -1,12 +1,12 @@
 <?php
 
-namespace Signup\Factory;
+namespace User\Factory;
 
+use User\Form\SignupForm;
+use User\Command\UserCommand;
+use User\Controller\SignupController;
 use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
-use User\Command\UserCommand;
-use Signup\Controller\SignupController;
-use Signup\Form\SignupForm;
 
 class SignupControllerFactory implements FactoryInterface {
 	/**
